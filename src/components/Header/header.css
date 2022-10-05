@@ -44,6 +44,28 @@
     display: flex;
     align-items: center;
     column-gap: 1.2rem;
+    position: relative;
+}
+
+.user__login:hover .login {
+    display: block;
+}
+
+.user__login img {
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.login {
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    background-color: coral;
+    padding: 0 20px;
+    color: var(--primary-color);
+    font-weight: 600;
+    border-radius: 50px;
+    display: none;
 }
 
 .nav__icons span i {
@@ -75,10 +97,36 @@
     z-index: 10;
 }
 
-.nav__icons span img {
+.nav__icons .profile img {
     width: 30px;
     height: 30px;
     cursor: pointer;
+    border-radius: 50%;
+}
+
+.nav__icons .profile {
+    position: relative;
+    z-index: 9;
+}
+
+.nav__icons .profile .profile__actions {
+    position: absolute;
+    top: 97%;
+    left: 0;
+    width: 150px;
+    z-index: 10;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background: var(--card-bg-01);
+    line-height: 30px;
+    display: none;
+    cursor: pointer;
+}
+
+.show__profileActions {
+    display: flex !important;
 }
 
 .mobile__menu {
