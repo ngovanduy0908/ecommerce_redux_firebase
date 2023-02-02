@@ -73,3 +73,7 @@ section {
         padding: 40px 0px;
     }
 }
+
+.form__group span {
+    color: #ff7d00;
+}

@@ -2,7 +2,6 @@ import { motion } from 'framer-motion';
 import React, { useState, useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Col, Container, Row } from 'reactstrap';
-import products from '../assets/data/products';
 import Helmet from '../components/Helmet/Helmet';
 import CommonSection from '../components/UI/CommonSection';
 import ProductsList from '../components/UI/ProductsList';
@@ -11,26 +10,41 @@ import { useDispatch } from 'react-redux';
 import { cartActions } from '../redux/slices/cartSlice';
 import { toast } from 'react-toastify';
 
+import { db } from '../firebase.config';
+import { doc, getDoc } from 'firebase/firestore';
+import useGetData from '../custom-hooks/useGetData';
+
 const ProductDetail = () => {
+    const [product, setProduct] = useState({});
     const { id } = useParams();
+
+    const { data: products } = useGetData('products');
+
+    const docRef = doc(db, 'products', id);
+
+    useEffect(() => {
+        const getProduct = async () => {
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                setProduct(docSnap.data());
+            } else {
+                console.log('no product');
+            }
+        };
+        getProduct();
+    }, []);
+
     const dispatch = useDispatch();
     const [tab, setTab] = useState('desc');
     const reviewUser = useRef('');
     const reviewMsg = useRef('');
 
     const [rating, setRating] = useState(null);
-    const product = products.find((item) => item.id === id);
+    // const product = products.find((item) => item.id === id);
 
-    const {
-        imgUrl,
-        productName,
-        price,
-        avgRating,
-        reviews,
-        shortDesc,
-        description,
-        category,
-    } = product;
+    const { imgUrl, productName, price, shortDesc, description, category } =
+        product;
 
     const relatedProducts = products.filter(
         (item) => item.category === category,
@@ -103,7 +117,7 @@ const ProductDetail = () => {
                                         </span>
                                     </div>
                                     <p>
-                                        ( <span>{avgRating}</span> ratings)
+                                        {/* ( <span>{avgRating}</span> ratings) */}
                                     </p>
                                 </div>
                                 <div className="d-flex align-items-center gap-5">
@@ -140,14 +154,14 @@ const ProductDetail = () => {
                                 >
                                     Description
                                 </h6>
-                                <h6
+                                {/* <h6
                                     className={`${
                                         tab === 'rev' ? 'active__tab' : ''
                                     }`}
                                     onClick={() => setTab('rev')}
                                 >
                                     Reviews ({reviews.length})
-                                </h6>
+                                </h6> */}
                             </div>
                             {tab === 'desc' ? (
                                 <div className="tab__content mt-5">
@@ -156,7 +170,7 @@ const ProductDetail = () => {
                             ) : (
                                 <div className="product__review mt-5">
                                     <div className="review__wrapper">
-                                        <ul>
+                                        {/* <ul>
                                             {reviews.map((item, index) => {
                                                 return (
                                                     <li
@@ -172,7 +186,7 @@ const ProductDetail = () => {
                                                     </li>
                                                 );
                                             })}
-                                        </ul>
+                                        </ul> */}
 
                                         <div className="review__form">
                                             <h4>Leave your experience</h4>
